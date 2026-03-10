@@ -1,0 +1,7 @@
+streamlit
+pinecone
+sentence-transformers
+google-generativeai
+python-dotenv
+huggingface_hub
+requests
