@@ -10,7 +10,7 @@ This setup is ideal for learning RAG pipelines or building small AI assistants.
 * Pinecone: Vector database for high-speed semantic search.
 * SentenceTransformers: Local embeddings for document representation.
 * Hugging Face Chat API: State-of-the-art LLM for generating answers.
-* Streamlit: Simple, web-based chat interface.
+* Streamlit: Web-based interface for chat and **dynamic PDF uploads.
 
 ---
 
@@ -35,14 +35,15 @@ pc.create_index(
 ## Project Structure
 
 mini-rag-hf/
-├── data/                 # Documents to ingest (e.g., document.txt)
+├── data/                 # Local documents to ingest
 ├── docs/                 # Documentation and diagrams
 ├── src/                  # Main source code
-│   ├── app.py            # Streamlit chat UI
+│   ├── app.py            # Streamlit chat & upload UI
 │   ├── config.py         # API keys, Pinecone & HF setup
-│   ├── ingest.py         # Document ingestion script
+│   ├── ingest.py         # Logic to process PDFs and text into Vector DB
 │   ├── rag_pipeline.py   # Retrieval + HF generation logic
-│   └── rag_utils.py      # Embeddings & chunking utilities
+│   ├── rag_utils.py      # Embeddings & chunking utilities
+│   └── pdf_utils.py      # PDF parsing and extraction logic
 ├── tests/                # Unit tests
 ├── .env.example          # Template for environment variables
 ├── requirements.txt      # Project dependencies
@@ -81,8 +82,14 @@ Required Keys:
 ---
 
 ## Usage
-
 ### 1. Ingest Documents
+Use the Sidebar to upload a PDF. The system will automatically:
+Extract text via pdf_utils.py.
+Process and chunk the data via ingest.py.
+Upsert embeddings to your Pinecone Vector DB.
+
+or 
+
 Place any text files in the data/ folder and run the ingestion script:
 
 python src/ingest.py
@@ -93,3 +100,5 @@ This chunks your documents, generates embeddings, and uploads them to your Pinec
 Launch the Streamlit interface to interact with your data:
 
 streamlit run src/app.py
+
+Once documents are ingested, use the Streamlit chat interface to ask questions based on your uploaded content.
