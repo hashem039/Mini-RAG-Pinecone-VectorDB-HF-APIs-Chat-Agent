@@ -5,9 +5,16 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 def embed_text(text):
     return model.encode(text).tolist()
 
-def chunk_text(text, size=150):
-    words = text.split()
+def chunk_text(text, chunk_size=500, overlap=100):
     chunks = []
-    for i in range(0, len(words), size):
-        chunks.append(" ".join(words[i:i+size]))
+    start = 0
+    text_length = len(text)
+
+    while start < text_length:
+        end = start + chunk_size
+        chunk = text[start:end]
+        chunks.append(chunk)
+
+        start += chunk_size - overlap
+
     return chunks
