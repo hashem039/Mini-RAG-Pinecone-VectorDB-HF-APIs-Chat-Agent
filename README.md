@@ -102,3 +102,50 @@ Launch the Streamlit interface to interact with your data:
 streamlit run src/app.py
 
 Once documents are ingested, use the Streamlit chat interface to ask questions based on your uploaded content.
+
+---
+
+## CI / CD (GitHub Actions)
+This repository includes a GitHub Actions workflow at `/.github/workflows/ci-cd.yml` that runs static analysis and tests on
+pull requests and pushes to `main`.
+
+What the workflow does
+
+- Installs project dependencies from `requirements.txt` (if present).
+- Installs `pylint` and `pytest` and runs them.
+    - `pylint` runs over `src/` (or `app/`), or falls back to linting all tracked `.py` files.
+    - `pytest` runs when a `tests/` directory or test files are present.
+
+Notes for maintainers
+
+- No external secrets are required by this workflow — it only runs lint and tests.
+- By default the workflow is permissive for lint failures (it won't block the job). If you prefer lint failures to fail the CI job, remove the `|| true` guard in the `pylint` step in the workflow file.
+
+Local checks before pushing
+
+Run the following locally to match CI behavior:
+
+```powershell
+# Create/activate virtualenv (Windows PowerShell)
+python -m venv .hmenv
+. .\hmenv\Scripts\Activate.ps1
+
+# Install project deps (optional)
+pip install -r requirements.txt
+
+# Install tools
+pip install pylint pytest
+
+# Run pylint (adjust target to your source dir)
+pylint src || true
+
+# Run tests
+pytest -q
+```
+
+Want more?
+
+- I can make lint failures block merges (recommended for strict CI).
+- I can add a `pyproject.toml` or `.pylintrc` with project-specific lint rules.
+- I can add caching for pip to speed up CI runs or a matrix to test multiple Python versions.
+
