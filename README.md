@@ -142,4 +142,3 @@ pylint src || true
 # Run tests
 pytest -q
 ```
-

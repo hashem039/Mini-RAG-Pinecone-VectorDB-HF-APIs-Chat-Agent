@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  lint-and-test:
+    name: Lint (pylint) and Test (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies (if present) and tools
+        run: |
+          # Install project deps if requirements.txt exists (some tests may need them)
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Ensure test and lint tools are available
+          pip install pytest pylint
+
+      - name: Run pylint
+        run: |
+          # Lint the main package directories if they exist, otherwise lint all .py files
+          if [ -d src ]; then
+            pylint src || true
+          elif [ -d app ]; then
+            pylint app || true
+          else
+            # Fallback: lint python files tracked by git
+            git ls-files '*.py' | xargs -r pylint || true
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -d tests ] || git ls-files | grep -E '(^tests/|test_).*\.py' >/dev/null 2>&1; then
+            pytest -q
+          else
+            echo "No tests found. Skipping pytest."
+          fi
