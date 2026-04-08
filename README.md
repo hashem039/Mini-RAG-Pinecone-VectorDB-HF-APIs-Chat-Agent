@@ -142,10 +142,3 @@ pylint src || true
 # Run tests
 pytest -q
 ```
-
-Want more?
-
-- I can make lint failures block merges (recommended for strict CI).
-- I can add a `pyproject.toml` or `.pylintrc` with project-specific lint rules.
-- I can add caching for pip to speed up CI runs or a matrix to test multiple Python versions.
-
