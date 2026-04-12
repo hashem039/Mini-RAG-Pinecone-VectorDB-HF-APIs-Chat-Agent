@@ -1,144 +1,102 @@
 # Mini-RAG Chatbot with Hugging Face & Pinecone
 
-This project implements a Retrieval-Augmented Generation (RAG) system designed to answer questions from documents. It uses semantic search to find relevant context and a Large Language Model (LLM) to generate accurate answers.
+A Retrieval-Augmented Generation (RAG) system designed to answer questions from your documents. This project uses semantic search via Pinecone to find relevant context and Hugging Face's LLM API to generate accurate, context-aware answers.
 
 ---
 
-## Overview
-This setup is ideal for learning RAG pipelines or building small AI assistants.
-
-* Pinecone: Vector database for high-speed semantic search.
-* SentenceTransformers: Local embeddings for document representation.
-* Hugging Face Chat API: State-of-the-art LLM for generating answers.
-* Streamlit: Web-based interface for chat and **dynamic PDF uploads.
-
----
-
-## Prerequisites: Pinecone Setup
-Before running the application, you must create a Pinecone index on the cloud with the following parameters:
-
-```python
-from pinecone import Pinecone, ServerlessSpec
-
-pc = Pinecone(api_key="YOUR_PINECONE_API_KEY")
-
-pc.create_index(
-    name="mini-rag",
-    dimension=384,
-    metric="cosine",
-    spec=ServerlessSpec(
-        cloud="aws",
-        region="us-east-1"
-    )
-)
-
-## Project Structure
-
-mini-rag-hf/
-├── data/                 # Local documents to ingest
-├── docs/                 # Documentation and diagrams
-├── src/                  # Main source code
-│   ├── app.py            # Streamlit chat & upload UI
-│   ├── config.py         # API keys, Pinecone & HF setup
-│   ├── ingest.py         # Logic to process PDFs and text into Vector DB
-│   ├── rag_pipeline.py   # Retrieval + HF generation logic
-│   ├── rag_utils.py      # Embeddings & chunking utilities
-│   └── pdf_utils.py      # PDF parsing and extraction logic
-├── tests/                # Unit tests
-├── .env.example          # Template for environment variables
-├── requirements.txt      # Project dependencies
-├── setup.py              # Optional pip-installable project
-└── pyproject.toml        # Modern Python metadata
+## 🚀 Features
+- **Vector Search:** High-speed semantic retrieval using Pinecone.
+- **Local Embeddings:** SentenceTransformers (`all-MiniLM-L6-v2`) for private document representation.
+- **LLM Power:** Mistral-7B-Instruct (via Hugging Face API) for high-quality generation.
+- **Interactive UI:** Streamlit web interface for chat and dynamic PDF ingestion.
+- **AI-Optimized:** Includes `GEMINI.md` for seamless integration with AI development agents.
 
 ---
 
-## Setup Instructions
+## 🏗️ Project Structure
+```text
+/
+├── src/
+│   ├── app.py           # Streamlit chat & upload UI
+│   ├── config.py        # API keys & client initialization
+│   ├── ingest.py        # Logic to process text/PDFs into Pinecone
+│   ├── rag_pipeline.py  # Retrieval + HF generation logic
+│   ├── rag_utils.py     # Embeddings & chunking utilities
+│   └── pdf_utils.py     # PDF parsing logic
+├── data/                # Local documents for ingestion
+├── .github/             # GitHub Actions workflows (CI/CD)
+├── GEMINI.md            # AI Agent instructions (Internal)
+├── requirements.txt     # Python dependencies
+└── .env.example         # Environment variable template
+```
 
-### 1. Clone the Repository
-git clone https://github.com/yourusername/mini-rag-hf.git
-cd mini-rag-hf
+---
 
-### 2. Create a Virtual Environment
+## 🛠️ Setup Instructions
+
+### 1. Prerequisites (Pinecone)
+Create a Pinecone index with the following parameters:
+- **Name:** `mini-rag`
+- **Dimension:** 384
+- **Metric:** `cosine`
+
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/hashem039/Mini-RAG-Pinecone-VectorDB-HF-APIs-Chat-Agent.git
+cd Mini-RAG-Pinecone-VectorDB-HF-APIs-Chat-Agent
+
+# Create and activate virtual environment
 python -m venv .hmenv
+source .hmenv/bin/activate  # Linux/Mac
+# .hmenv\Scripts\activate   # Windows
 
-# Linux/Mac
-source .hmenv/bin/activate
-
-# Windows
-.hmenv\Scripts\activate
-
-### 3. Install Dependencies
+# Install dependencies
 pip install -r requirements.txt
+```
 
-### 4. Configure Environment Variables
-Copy .env.example to .env and fill in your API keys:
-
+### 3. Configure Environment
+Copy `.env.example` to `.env` and fill in your API keys:
+```bash
 cp .env.example .env
-
-Required Keys:
-* PINECONE_API_KEY: Your Pinecone project key.
-* HF_TOKEN: Your Hugging Face User Access Token.
+```
+**Required Keys:**
+- `PINECONE_API_KEY`: Your Pinecone project key.
+- `HF_API_KEY`: Your Hugging Face User Access Token.
+- `GEMINI_API_KEY`: (Optional) Required for Gemini CLI integration.
 
 ---
 
-## Usage
-### 1. Ingest Documents
-Use the Sidebar to upload a PDF. The system will automatically:
-Extract text via pdf_utils.py.
-Process and chunk the data via ingest.py.
-Upsert embeddings to your Pinecone Vector DB.
+## 📖 Usage
 
-or 
-
-Place any text files in the data/ folder and run the ingestion script:
-
-python src/ingest.py
-
-This chunks your documents, generates embeddings, and uploads them to your Pinecone index.
-
-### 2. Start the Chat App
+### Start the Chat App
 Launch the Streamlit interface to interact with your data:
-
+```bash
 streamlit run src/app.py
+```
 
-Once documents are ingested, use the Streamlit chat interface to ask questions based on your uploaded content.
+### Ingesting Documents
+- **Via UI:** Use the sidebar in the Streamlit app to upload and index PDFs dynamically.
+- **Via CLI:** Place `.txt` files in the `data/` folder and run the ingestion script:
+  ```bash
+  python src/ingest.py
+  ```
 
 ---
 
-## CI / CD (GitHub Actions)
-This repository includes a GitHub Actions workflow at `/.github/workflows/ci-cd.yml` that runs static analysis and tests on
-pull requests and pushes to `main`.
+## 🤖 AI-Assisted Development
+This repository is optimized for use with the **Gemini CLI**. See [GEMINI.md](./GEMINI.md) for detailed architectural context and instructions used by AI agents to help you develop, review, and maintain this codebase.
 
-What the workflow does
+---
 
-- Installs project dependencies from `requirements.txt` (if present).
-- Installs `pylint` and `pytest` and runs them.
-    - `pylint` runs over `src/` (or `app/`), or falls back to linting all tracked `.py` files.
-    - `pytest` runs when a `tests/` directory or test files are present.
+## 🧪 CI / CD
+This project includes a GitHub Actions workflow (`.github/workflows/test-and-lint.yml`) that automatically runs:
+- **Pylint:** Static analysis on `src/`.
+- **Pytest:** Unit tests (if present).
 
-Notes for maintainers
-
-- No external secrets are required by this workflow — it only runs lint and tests.
-- By default the workflow is permissive for lint failures (it won't block the job). If you prefer lint failures to fail the CI job, remove the `|| true` guard in the `pylint` step in the workflow file.
-
-Local checks before pushing
-
-Run the following locally to match CI behavior:
-
-```powershell
-# Create/activate virtualenv (Windows PowerShell)
-python -m venv .hmenv
-. .\hmenv\Scripts\Activate.ps1
-
-# Install project deps (optional)
-pip install -r requirements.txt
-
-# Install tools
+To run locally:
+```bash
 pip install pylint pytest
-
-# Run pylint (adjust target to your source dir)
 pylint src || true
-
-# Run tests
 pytest -q
 ```
