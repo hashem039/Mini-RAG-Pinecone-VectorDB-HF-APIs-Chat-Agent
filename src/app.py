@@ -1,7 +1,7 @@
 import streamlit as st
-from rag_pipeline import generate_answer
-from pdf_utils import extract_text_from_pdf
-from ingest import ingest_text
+from src.rag_pipeline import generate_answer
+from src.pdf_utils import extract_text_from_pdf
+from src.ingest import ingest_text
 
 st.title("Mini-RAG Chatbot (Hugging Face)")
 

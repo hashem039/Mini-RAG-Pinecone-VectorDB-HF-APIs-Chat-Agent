@@ -1,6 +1,6 @@
 import uuid
-from config import index
-from rag_utils import embed_text, chunk_text
+from src.config import index
+from src.rag_utils import embed_text, chunk_text
 
 
 def load_document():
