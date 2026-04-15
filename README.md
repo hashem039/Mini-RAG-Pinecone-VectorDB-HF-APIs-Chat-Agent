@@ -61,6 +61,9 @@ source .venv/bin/activate  # Linux/Mac
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Set PYTHONPATH to the root directory (Required for imports)
+export PYTHONPATH=$PYTHONPATH:.
 ```
 
 ### 3. Configure Environment
@@ -78,8 +81,9 @@ cp .env.example .env
 ## 📖 Usage
 
 ### Start the Chat App
-Launch the Streamlit interface to interact with your data:
+Launch the Streamlit interface to interact with your data (ensure `PYTHONPATH` is set):
 ```bash
+export PYTHONPATH=$PYTHONPATH:.
 streamlit run src/app.py
 ```
 
@@ -87,6 +91,7 @@ streamlit run src/app.py
 - **Via UI:** Use the sidebar in the Streamlit app to upload and index PDFs dynamically.
 - **Via CLI:** Place `.txt` files in the `data/` folder and run the ingestion script:
   ```bash
+  export PYTHONPATH=$PYTHONPATH:.
   python src/ingest.py
   ```
 
