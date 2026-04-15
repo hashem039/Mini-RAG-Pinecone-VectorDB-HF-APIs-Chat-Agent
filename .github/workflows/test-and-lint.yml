@@ -8,6 +8,8 @@ jobs:
   lint-and-test:
     name: Lint (pylint) and Test (pytest)
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
