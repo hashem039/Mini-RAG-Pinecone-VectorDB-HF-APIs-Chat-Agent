@@ -17,6 +17,7 @@ for module_name in mock_modules:
 import pytest
 
 @pytest.fixture
+def mock_hf_response():
 def mock_pinecone_index():
     return MagicMock()
 
