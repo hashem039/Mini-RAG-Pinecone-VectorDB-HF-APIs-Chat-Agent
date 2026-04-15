@@ -22,7 +22,8 @@ A Retrieval-Augmented Generation (RAG) system designed to answer questions from 
 │   ├── ingest.py        # Logic to process text/PDFs into Pinecone
 │   ├── rag_pipeline.py  # Retrieval + HF generation logic
 │   ├── rag_utils.py     # Embeddings & chunking utilities
-│   └── pdf_utils.py     # PDF parsing logic
+│   ├── pdf_utils.py     # PDF parsing logic
+│   └── main.py          # Script for manual Pinecone index creation
 ├── tests/               # Unit test suite (pytest)
 │   ├── conftest.py      # Shared fixtures & mocks
 │   ├── test_ingest.py   # Ingestion flow tests
@@ -45,6 +46,8 @@ Create a Pinecone index with the following parameters:
 - **Dimension:** 384
 - **Metric:** `cosine`
 
+*Note: You can also use `src/main.py` as a reference for creating the index programmatically.*
+
 ### 2. Installation
 ```bash
 # Clone the repository
@@ -52,13 +55,12 @@ git clone https://github.com/hashem039/Mini-RAG-Pinecone-VectorDB-HF-APIs-Chat-A
 cd Mini-RAG-Pinecone-VectorDB-HF-APIs-Chat-Agent
 
 # Create and activate virtual environment
-python -m venv .hmenv
-source .hmenv/bin/activate  # Linux/Mac
-# .hmenv\Scripts\activate   # Windows
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
 
 # Install dependencies
 pip install -r requirements.txt
-pip install pytest pytest-mock  # For testing
 ```
 
 ### 3. Configure Environment
@@ -97,12 +99,10 @@ This repository is optimized for use with the **Gemini CLI**. See [GEMINI.md](./
 This project includes a comprehensive unit test suite in `tests/` that uses mocks to simulate Pinecone, Hugging Face, and embedding logic.
 
 ### Running Unit Tests
-# Set PYTHONPATH and run pytest
+```bash
+# Set PYTHONPATH and run pytest from the root directory
 export PYTHONPATH=$PYTHONPATH:.
-python3 -m pytest tests
-# Set PYTHONPATH and run pytest
-export PYTHONPATH=$PYTHONPATH:./src
-python3 -m pytest tests
+pytest tests
 ```
 
 ### CI / CD
