@@ -23,6 +23,11 @@ A Retrieval-Augmented Generation (RAG) system designed to answer questions from 
 │   ├── rag_pipeline.py  # Retrieval + HF generation logic
 │   ├── rag_utils.py     # Embeddings & chunking utilities
 │   └── pdf_utils.py     # PDF parsing logic
+├── tests/               # Unit test suite (pytest)
+│   ├── conftest.py      # Shared fixtures & mocks
+│   ├── test_ingest.py   # Ingestion flow tests
+│   ├── test_rag_pipeline.py # RAG logic tests
+│   └── ...
 ├── data/                # Local documents for ingestion
 ├── .github/             # GitHub Actions workflows (CI/CD)
 ├── GEMINI.md            # AI Agent instructions (Internal)
@@ -53,6 +58,7 @@ source .hmenv/bin/activate  # Linux/Mac
 
 # Install dependencies
 pip install -r requirements.txt
+pip install pytest pytest-mock  # For testing
 ```
 
 ### 3. Configure Environment
@@ -87,16 +93,19 @@ streamlit run src/app.py
 ## 🤖 AI-Assisted Development
 This repository is optimized for use with the **Gemini CLI**. See [GEMINI.md](./GEMINI.md) for detailed architectural context and instructions used by AI agents to help you develop, review, and maintain this codebase.
 
----
+## 🧪 Testing and CI / CD
+This project includes a comprehensive unit test suite in `tests/` that uses mocks to simulate Pinecone, Hugging Face, and embedding logic.
 
-## 🧪 CI / CD
+### Running Unit Tests
+# Set PYTHONPATH and run pytest
+export PYTHONPATH=$PYTHONPATH:.
+python3 -m pytest tests
+# Set PYTHONPATH and run pytest
+export PYTHONPATH=$PYTHONPATH:./src
+python3 -m pytest tests
+```
+
+### CI / CD
 This project includes a GitHub Actions workflow (`.github/workflows/test-and-lint.yml`) that automatically runs:
 - **Pylint:** Static analysis on `src/`.
-- **Pytest:** Unit tests (if present).
-
-To run locally:
-```bash
-pip install pylint pytest
-pylint src || true
-pytest -q
-```
+- **Pytest:** Automated testing via CI.

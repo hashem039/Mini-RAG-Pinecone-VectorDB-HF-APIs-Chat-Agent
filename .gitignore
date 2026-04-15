@@ -1,2 +1,9 @@
 .gemini/
 gha-creds-*.json
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.env

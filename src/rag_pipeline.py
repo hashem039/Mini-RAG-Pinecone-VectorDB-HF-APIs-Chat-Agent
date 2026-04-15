@@ -1,6 +1,6 @@
 import requests
-from config import index, HF_API_URL, HF_HEADERS, HF_MODEL
-from rag_utils import embed_text
+from src.config import index, HF_API_URL, HF_HEADERS, HF_MODEL
+from src.rag_utils import embed_text
 
 TOP_K = 10
 SIMILARITY_THRESHOLD = 0.75
