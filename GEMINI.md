@@ -38,7 +38,7 @@ Execute the test suite using `pytest`. Mocks are used to avoid requiring API key
 ```bash
 export PYTHONPATH=$PYTHONPATH:./src
 pytest tests
-```
+export PYTHONPATH=$PYTHONPATH:.
 
 ## Development Conventions
 
