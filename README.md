@@ -97,7 +97,9 @@ This repository is optimized for use with the **Gemini CLI**. See [GEMINI.md](./
 This project includes a comprehensive unit test suite in `tests/` that uses mocks to simulate Pinecone, Hugging Face, and embedding logic.
 
 ### Running Unit Tests
-```bash
+# Set PYTHONPATH and run pytest
+export PYTHONPATH=$PYTHONPATH:.
+python3 -m pytest tests
 # Set PYTHONPATH and run pytest
 export PYTHONPATH=$PYTHONPATH:./src
 python3 -m pytest tests
